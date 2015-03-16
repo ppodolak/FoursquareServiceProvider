@@ -10,12 +10,12 @@ use TheTwelve\Foursquare\Redirector;
 class FoursquareServiceProvider implements ServiceProviderInterface
 {
 
-    public function register(Container $app)
+    public function register(Container $container)
     {
 
-        $app['foursquare.client'] = function($app)  {
+        $container['foursquare.client'] = function($container)  {
 
-            switch ($app['foursquare.clientKey']) {
+            switch ($container['foursquare.clientKey']) {
 
                 case 'buzz':
                     $browser = new \Buzz\Browser();
@@ -26,19 +26,19 @@ class FoursquareServiceProvider implements ServiceProviderInterface
                     return new HttpClient\SymfonyHttpClient();
 
                 default:
-                    return new HttpClient\CurlHttpClient($app['foursquare.pathToCertificate']);
+                    return new HttpClient\CurlHttpClient($container['foursquare.pathToCertificate']);
 
             }
 
         };
 
-        $app['foursquare.redirector'] = function($app) {
+        $container['foursquare.redirector'] = function($container) {
 
-            if (!isset($app['foursquare.redirectorKey'])) {
+            if (!isset($container['foursquare.redirectorKey'])) {
                 return null;
             }
 
-            switch ($app['foursquare.redirectorKey']) {
+            switch ($container['foursquare.redirectorKey']) {
 
                 case 'symfony':
                     // the Symfony client is preferred with silex
@@ -51,15 +51,15 @@ class FoursquareServiceProvider implements ServiceProviderInterface
 
         };
 
-        $app['foursquare'] = function($app) {
+        $container['foursquare'] = function($container) {
 
-            $client = $app['foursquare.client'];
-            $redirector = $app['foursquare.redirector'];
+            $client = $container['foursquare.client'];
+            $redirector = $container['foursquare.redirector'];
 
             $factory = new \TheTwelve\Foursquare\ApiGatewayFactory($client, $redirector);
-            $factory->useVersion($app['foursquare.version']);
-            $factory->setEndpointUri($app['foursquare.endpoint']);
-            $factory->setClientCredentials($app['foursquare.clientId'], $app['foursquare.clientSecret']);
+            $factory->useVersion($container['foursquare.version']);
+            $factory->setEndpointUri($container['foursquare.endpoint']);
+            $factory->setClientCredentials($container['foursquare.clientId'], $container['foursquare.clientSecret']);
 
             return $factory;
 
