@@ -11,10 +11,17 @@ A Silex Service Provider for our Foursquare API Client
 foursquare client into your project.
 
 ### Create your composer.json file
+    "repositories":
+    [
+        {
+            "type": "vcs",
+            "url": "https://github.com/ppodolak/FoursquareServiceProvider.git"
+        }
+    ],
 
       {
           "require": {
-              "ppodolak/foursquare-service-provider": "dev-master@dev"
+              "thetwelvelabs/foursquare-service-provider": "dev-master@dev"
           }
       }
 
