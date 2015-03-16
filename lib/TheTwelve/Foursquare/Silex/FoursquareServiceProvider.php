@@ -2,17 +2,18 @@
 
 namespace TheTwelve\Foursquare\Silex;
 
-use Silex,
-    TheTwelve\Foursquare\HttpClient,
-    TheTwelve\Foursquare\Redirector;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
+use TheTwelve\Foursquare\HttpClient;
+use TheTwelve\Foursquare\Redirector;
 
-class FoursquareServiceProvider implements Silex\ServiceProviderInterface
+class FoursquareServiceProvider implements ServiceProviderInterface
 {
 
-    public function register(Silex\Application $app)
+    public function register(Container $app)
     {
 
-        $app['foursquare.client'] = $app->share(function() use ($app) {
+        $app['foursquare.client'] = function($app)  {
 
             switch ($app['foursquare.clientKey']) {
 
@@ -29,9 +30,9 @@ class FoursquareServiceProvider implements Silex\ServiceProviderInterface
 
             }
 
-        });
+        };
 
-        $app['foursquare.redirector'] = $app->share(function() use ($app) {
+        $app['foursquare.redirector'] = function($app) {
 
             if (!isset($app['foursquare.redirectorKey'])) {
                 return null;
@@ -48,9 +49,9 @@ class FoursquareServiceProvider implements Silex\ServiceProviderInterface
 
             }
 
-        });
+        };
 
-        $app['foursquare'] = $app->share(function() use ($app) {
+        $app['foursquare'] = function($app) {
 
             $client = $app['foursquare.client'];
             $redirector = $app['foursquare.redirector'];
@@ -62,11 +63,8 @@ class FoursquareServiceProvider implements Silex\ServiceProviderInterface
 
             return $factory;
 
-        });
+        };
 
     }
-
-    public function boot(Silex\Application $app)
-    {}
 
 }

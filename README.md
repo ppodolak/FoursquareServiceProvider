@@ -14,7 +14,7 @@ foursquare client into your project.
 
       {
           "require": {
-              "thetwelvelabs/foursquare-service-provider": "dev-master@dev"
+              "ppodolak/foursquare-service-provider": "dev-master@dev"
           }
       }
 

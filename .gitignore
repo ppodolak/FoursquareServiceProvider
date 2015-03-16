@@ -13,3 +13,6 @@ vendor/
 # phpunit files
 tests/phpunit.xml
 
+#phpstorm
+.idea
+
